@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prateek Kumar - Personal Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- This div creates the static, abstract geometric background -->
+    <div class="background-shapes"></div>
+
+    <!-- Main container for the entire layout -->
+    <div class="main-container">
+      <!--  STATIC NAVIGATION SIDEBAR (left column)      -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <a href="#about" class="nav-logo">Prateek Kumar</a>
+        </div>
+        <ul class="sidebar-nav">
+          <li>
+            <a href="#about" class="nav-link active" data-page="about"
+              ><span>◼</span> About</a
+            >
+          </li>
+          <li>
+            <a href="#resume" class="nav-link" data-page="resume"
+              ><span>◼</span> Resume</a
+            >
+          </li>
+          <li>
+            <a href="#portfolio" class="nav-link" data-page="portfolio"
+              ><span>◼</span> Portfolio</a
+            >
+          </li>
+          <li>
+            <a href="#blog" class="nav-link" data-page="blog"
+              ><span>◼</span> Blog</a
+            >
+          </li>
+          <li>
+            <a href="#contact" class="nav-link" data-page="contact"
+              ><span>◼</span> Contact</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <!--  DYNAMIC CONTENT AREA (right column)          -->
+      <main class="content-area">
+        <!-- Profile Header (present on all pages) -->
+        <header class="profile-header">
+          <div class="profile-main">
+            <img
+              src="./images/IMG_20240920_150100.jpg"
+              alt="Prateek Kumar Profile Picture"
+              class="profile-picture"
+            />
+            <div class="profile-info">
+              <h1 class="profile-name">Prateek Kumar</h1>
+              <p class="profile-title">DevOps Engineer & SRE</p>
+              <div class="profile-status">
+                <span class="status-indicator"></span>
+                Available for freelance projects
+              </div>
+            </div>
+          </div>
+          <div class="profile-actions">
+            <a href="mailto:kprateek9315@gmail.com" class="profile-contact-link"
+              >Email Me</a
+            >
+            <a href="#" class="profile-cv-link">Download CV</a>
+          </div>
+        </header>
+
+        <!-- This is where dynamic page content will be injected by JavaScript -->
+        <div id="page-content" class="page-content">
+          <!-- Initial content will be loaded here by JS -->
+        </div>
+
+        <!-- Footer (present on all pages) -->
+        <footer class="main-footer">
+          <p>
+            All systems are operational. Status:
+            <span class="footer-status-ok">OK</span>. Uptime: 99.9%
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <!-- JavaScript file at the end of the body for faster page load -->
+    <script src="./js/main.js"></script>
+  </body>
+</html>
