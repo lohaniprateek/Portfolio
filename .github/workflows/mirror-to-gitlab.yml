@@ -15,5 +15,5 @@ jobs:
 
       - name: Push to GitLab
         run: |
-          git remote add gitlab https:lohaniprateek:${{ secrets.GITLAB_TOKEN }}@gitlab.com/lohaniprateek/portfolio.git
+          git remote add gitlab https://lohaniprateek:${{ secrets.GITLAB_TOKEN }}@gitlab.com/lohaniprateek/portfolio.git
           git push --mirror gitlab
