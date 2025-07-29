@@ -1,4 +1,3 @@
-// Wait for the DOM to be fully loaded before running scripts
 document.addEventListener("DOMContentLoaded", () => {
   const contentContainer = document.getElementById("page-content");
   const navLinks = document.querySelectorAll(".nav-link");
@@ -91,7 +90,7 @@ retail business.<br>
             <section class="section">
   <h3 class="section-title">Non-formal Education</h3>
 
-  <p><strong>DevOps Beginners to Advanced with Projects</strong> from Udemy (2021–2025)<br /><br />
+  <p><strong>➥ DevOps Beginners to Advanced with Projects</strong> from Udemy (2025)<br />
   Through the "DevOps Beginners to Advanced with Projects" course, I gained hands-on experience with essential DevOps tools and practices.<br />
   I worked with AWS, Linux, Bash scripting, Jenkins, Ansible, Docker, Kubernetes, GitOps, and Terraform.<br />
   I learned to build CI/CD pipelines, automate infrastructure, manage containerized applications, and implement Infrastructure as Code.<br />
@@ -99,18 +98,37 @@ retail business.<br>
   By the end of the course, I was able to apply these skills in real-world projects and practical scenarios.
   </p><br />
 
-  <p><strong>RH104 – Red Hat Introduction to Linux:</strong><br />
+  <p><strong>➥ RH104 – Red Hat Introduction to Linux:</strong><br />
   Gained foundational understanding of Linux, terminal usage, file operations, and system components.
   </p><br />
 
-  <p><strong>RH124 – Red Hat System Administration I:</strong><br />
+  <p><strong>➥ RH124 – Red Hat System Administration I:</strong><br />
   Learned basic Linux commands, user and group management, and filesystem navigation on RHEL systems.
   </p><br />
 
-  <p><strong>RH134 – Red Hat System Administration II:</strong><br />
+  <p><strong>➥ RH134 – Red Hat System Administration II:</strong><br />
   Built on RH124 by covering advanced topics like process management, system services, scheduling, and firewalls.
   </p>
+  <br />
 
+
+  <p><strong>➥ Full Stack Web Development Bootcamp</strong> from Udemy (2024)<br />
+  
+  Completed an in-depth course covering front-end and back-end technologies. Built responsive websites and dynamic web apps using:
+
+Front-End: HTML5, CSS3, Flexbox, Grid, Bootstrap 5, JavaScript (ES6), DOM, jQuery <br />
+
+Version Control: Git, GitHub, CLI (Bash)<br />
+
+Back-End: Node.js, Express.js, NPM, EJS, REST APIs<br />
+
+Database: SQL, PostgreSQL<br />
+
+Authentication: User login systems<br />
+
+Modern Web: React.js (with Hooks), Web Design Principles, GitHub Pages Deployment<br />
+
+Web3: Basics of Blockchain and dApps on Internet Computer Protocol (ICP)</p>
 </section>
 
             <section class="section">
@@ -168,12 +186,15 @@ retail business.<br>
                     <div class="skill-info"><p>Js</p><p>55%</p></div>
                     <div class="progress-bar"><div class="progress" style="width: 55%;"></div></div>
                 </div>
+                 <div class="skill-item">
+                    <div class="skill-info"><p>Lua</p><p>65%</p></div>
+                    <div class="progress-bar"><div class="progress" style="width: 65%;"></div></div>
+                </div>
             </section>
         `;
   };
 
   const renderPortfolioPage = async () => {
-    // Fetch portfolio data from the Go backend
     const response = await fetch("/api/portfolio");
     const items = await response.json();
 
@@ -198,7 +219,6 @@ retail business.<br>
   };
 
   const renderBlogPage = async () => {
-    // Fetch blog data from the Go backend
     const response = await fetch("/api/blog");
     const posts = await response.json();
 

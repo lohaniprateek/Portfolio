@@ -36,12 +36,37 @@ func main() {
 	// API handler for portfolio items
 	http.HandleFunc("/api/portfolio", func(w http.ResponseWriter, r *http.Request) {
 		portfolioItems := []PortfolioItem{
-			{Title: "Get AidEasy", Description: "Automated build, test, and deployment pipeline using Jenkins and Kubernetes.", ImageURL: "https://github.com/lohaniprateek/Get-AidEasy/blob/main/static/images-preview/Home.png", Category: "DevOps",  Link: "https://github.com/lohaniprateek/Get-AidEasy"},
-			{Title: "Multi Cloud Hybrid Infrastructure ", Description: "A Grafana dashboard for real-time application performance monitoring.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project+3", Category: "SRE"},
-			{Title: "Sms Orchestration Automation", Description: ".", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project", Category: "Development"}, 
-			{Title: "Static Site Deployment", Description: "Managed cloud resources using Terraform for reproducible environments.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project+5", Category: "Cloud"},
-			// {Title: "Automated System Auditing", Description: "Developed scripts for automated security and compliance auditing.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project+6", Category: "SRE"},
-			// {Title: "Cloud Migration Strategy", Description: "A comprehensive plan for migrating on-premise infrastructure to AWS.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project+1", Category: "Cloud"},
+			{
+				Title:       "Get AidEasy",
+				Description: "Get-EasyAid is a responsive web app that automates Coursera Financial Aid applications using Google Gemini API. Users select a course, submit a form, and receive AI-generated answers to required questions. I forked, containerized it with Docker, and set up CI/CD using GitHub Actions for seamless deployment and updates.",
+				ImageURL:    "../images/Project1.png",
+				Category:    "DevOps",
+				Link:        "https://github.com/lohaniprateek/Get-AidEasy"},
+
+			{
+				Title:       "Multi Cloud Hybrid Infrastructure",
+				Description: "Solution to xAI's 'Multi-Cloud Hybrid Infrastructure' Optimization challenge. Redesigned a microservices-based hybrid cloud setup (AWS & GCP) to fix inefficiencies and security flaws using infrastructure modernization, prompt engineering, and security best practices.",
+				ImageURL:    "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
+				Category:    "SRE",
+				Link:        "https://github.com/lohaniprateek/Get-AidEasy"},
+			{
+				Title:       "React Demo Github Actions",
+				Description: "Implemented GitHub Actions for automated CI/CD pipelines and integrated SonarQube for code quality analysis in a forked React application. Successfully deployed the React app and its dist folder to production environments.",
+				ImageURL:    "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
+				Category:    "Development", Link: "https://github.com/lohaniprateek/Get-AidEasy"},
+			{
+				Title: "Sms Orchestration Automation",
+				Description: "Built a multi-VM setup using Vagrant and Docker, deployed Nginx with shell scripts, and integrated Prometheus for monitoring. Showcased DevOps skills in orchestration, containerization, and observability.",
+				ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
+				Category: "SRE",
+				Link: ""},
+			{
+				Title:       "Static Site Deployment",
+				Description: "This project focused on deploying a static HTML website using Docker. The goal was to create a containerized environment that runs a lightweight web server to serve static content. This approach ensures easy setup, consistent behavior across systems, and simplified deployment, making the website portable, efficient, and ready for production use",
+				ImageURL:    "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
+				Category:    "Cloud",
+				Link:        "https://github.com/lohaniprateek/Get-AidEasy"},
+			// {Title: "Cloud Migration Strategy", Description: "A comprehensive plan for migrating on-premise infrastructure to AWS.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project+1", Category: "Cloud", Link: "},
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(portfolioItems)
