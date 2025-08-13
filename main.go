@@ -117,7 +117,7 @@ func main() {
 	http.Handle("/", fs)
 
 	// --- Start Server ---
-	log.Println("Starting server on http://localhost:8080")
+	log.Println("Starting server on http://0.0.0.0:8080")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("Could not start server: %s\n", err)

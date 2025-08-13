@@ -1,7 +1,9 @@
 /* ============================================= */
-/*  GLOBAL STYLES & VARIABLES                    */
+/* 1. GLOBAL STYLES & VARIABLES                  */
 /* ============================================= */
+
 :root {
+    /* Color Palette */
     --bg-color: #121212;
     --surface-color: #1e1e1e;
     --primary-text-color: #e0e0e0;
@@ -10,9 +12,12 @@
     --accent-color-hover: #a362f7;
     --border-color: #2a2a2a;
     --shadow-color: rgba(0, 0, 0, 0.4);
+
+    /* Sizing & Radius */
     --border-radius: 12px;
 }
 
+/* Universal box-sizing and reset */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -24,12 +29,14 @@ body {
     color: var(--primary-text-color);
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
-    overflow-x: hidden; 
+    overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
 /* ============================================= */
-/*  GEOMETRIC BACKGROUND                         */
+/* 2. BACKGROUND & LAYOUT                        */
 /* ============================================= */
+
+/* Static, decorative background element */
 .background-shapes {
     position: fixed;
     top: 0;
@@ -45,9 +52,7 @@ body {
     background-color: var(--bg-color);
 }
 
-/* ============================================= */
-/*  MAIN LAYOUT                                  */
-/* ============================================= */
+/* Main flex container for the two-column layout */
 .main-container {
     display: flex;
     max-width: 1400px;
@@ -56,28 +61,30 @@ body {
     gap: 2rem;
 }
 
+/* The left sidebar column */
 .sidebar {
-    position: sticky; 
+    position: sticky; /* Keeps the sidebar visible during scroll */
     top: 2rem;
     width: 240px;
-    height: calc(100vh - 4rem); 
+    height: calc(100vh - 4rem); /* Full height minus top/bottom padding */
     background-color: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 1.5rem;
-    flex-shrink: 0; 
-    
+    flex-shrink: 0; /* Prevents the sidebar from shrinking */
 }
 
+/* The right main content column */
 .content-area {
-    flex-grow: 1; 
+    flex-grow: 1; /* Allows the content area to take up remaining space */
     display: flex;
     flex-direction: column;
 }
 
 /* ============================================= */
-/*  SIDEBAR STYLES                               */
+/* 3. SIDEBAR COMPONENTS                         */
 /* ============================================= */
+
 .sidebar-header {
     margin-bottom: 2rem;
 }
@@ -91,14 +98,7 @@ body {
 
 .sidebar-nav {
     list-style: none;
-
 }
-
-#sidebar-nav-img{
-        width: 40px;
-        height: 40px;
-
-    }  
 
 .nav-link {
     display: flex;
@@ -127,44 +127,49 @@ body {
     color: #121212;
     font-weight: 600;
 }
+
 .nav-link.active span {
     color: #121212;
 }
-.sidebar-nav-social-res {
-    display: none; 
-}
 
+/* Social media links at the bottom of the sidebar */
 .sidebar-nav-social {
     list-style: none;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 0.5em;
-    position:absolute;
+    justify-content: center;
+    gap: 0.5rem;
+    position: absolute; /* Position relative to the sidebar */
     bottom: 0;
     left: 0;
     width: 100%;
     padding: 1rem 0;
-    justify-content: center;    
+}
+
+#sidebar-nav-img, .social-img {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s;
 }
 
 .nav-link-social {
     list-style: none;
-    align-items: center;
     padding: 0.5rem;
     color: var(--secondary-text-color);
     text-decoration: none;
 }
-.social-img {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.2s;
-    text-decoration: none;
+
+/* This is the version of social links for responsive mode */
+.sidebar-nav-social-res {
+    display: none; /* Hidden by default, shown in media queries */
 }
 
+
 /* ============================================= */
-/*  CONTENT AREA - PROFILE HEADER                */
+/* 4. CONTENT AREA COMPONENTS                    */
 /* ============================================= */
+
+/* --- Profile Header (Top of content area) --- */
 .profile-header {
     display: flex;
     justify-content: space-between;
@@ -213,17 +218,19 @@ body {
 .status-indicator {
     width: 10px;
     height: 10px;
-    background-color: #4caf50;
+    background-color: #4caf50; /* Green */
     border-radius: 50%;
     animation: pulse 2s infinite;
 }
 
+/* Pulsing animation for the status indicator */
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
     100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
 }
 
+/* Buttons in the profile header */
 .profile-actions {
     display: flex;
     gap: 1rem;
@@ -253,20 +260,21 @@ body {
     background-color: var(--accent-color);
     color: #121212;
 }
+
 .profile-cv-link:hover {
     background-color: var(--accent-color-hover);
     box-shadow: 0 2px 8px rgba(187, 134, 252, 0.3);
 }
 
-/* ============================================= */
-/*  CONTENT AREA - DYNAMIC CONTENT & FOOTER     */
-/* ============================================= */
+
+/* --- Page Content & Footer --- */
+
 .page-content {
     background-color: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 2rem;
-    flex-grow: 1;
+    flex-grow: 1; /* Pushes the footer down */
     box-shadow: 0 4px 15px var(--shadow-color);
 }
 
@@ -275,7 +283,7 @@ body {
     margin-bottom: 2rem;
     border-bottom: 2px solid var(--accent-color);
     padding-bottom: 0.5rem;
-    display: inline-block;
+    display: inline-block; /* Ensures border only spans the text width */
 }
 
 .main-footer {
@@ -291,13 +299,15 @@ body {
     font-weight: 600;
 }
 
+
 /* ============================================= */
-/*  REUSABLE COMPONENTS                          */
+/* 5. REUSABLE COMPONENTS                        */
 /* ============================================= */
 
-/* --- Cards (Portfolio, Blog, About) --- */
+/* --- Cards (For Portfolio, Blog, About) --- */
 .card-grid {
     display: grid;
+    /* Creates a responsive grid that fits as many 280px columns as possible */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
 }
@@ -306,7 +316,7 @@ body {
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    overflow: hidden;
+    overflow: hidden; /* Ensures content respects the border radius */
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -318,7 +328,7 @@ body {
 .card-image {
     width: 100%;
     height: 180px;
-    object-fit: cover;
+    object-fit: cover; /* Prevents image distortion */
 }
 
 .card-content {
@@ -342,31 +352,38 @@ body {
     font-size: 0.9rem;
 }
 
+/* Note: a generic background image class like this can be tricky.
+   It's often better to create specific modifier classes like .card--devops */
 .card-bgi {
-    background-image: url('../images/devops.jpg');
     background-size: cover;
     background-position: center;
 }
-/* --- Section --- */
+
+
+/* --- Generic Section --- */
 .section {
     margin-bottom: 3rem;
 }
+
 .section-title {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     color: var(--primary-text-color);
 }
 
-/* --- Progress Bars (Resume) --- */
+
+/* --- Progress Bars (For Skills) --- */
 .skill-item {
     margin-bottom: 1rem;
 }
+
 .skill-info {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
     font-weight: 500;
 }
+
 .progress-bar {
     width: 100%;
     height: 8px;
@@ -374,13 +391,15 @@ body {
     border-radius: 4px;
     overflow: hidden;
 }
+
 .progress {
     height: 100%;
     background-color: var(--accent-color);
     border-radius: 4px;
 }
 
-/* --- Forms (Contact) --- */
+
+/* --- Forms (For Contact Page) --- */
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -439,11 +458,104 @@ body {
     box-shadow: 0 2px 8px rgba(187, 134, 252, 0.3);
 }
 
+
 /* ============================================= */
-/*  RESPONSIVENESS                               */
+/* 6. TIMELINE STYLES (for Resume Page)          */
 /* ============================================= */
 
-/* Tablet View */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-header .section-title {
+    margin-bottom: 0; /* Override default margin when inside a header */
+}
+
+.section-header svg {
+    width: 28px;
+    height: 28px;
+    color: var(--accent-color);
+}
+
+/* The main container for the timeline */
+.timeline {
+    position: relative; /* Acts as the anchor for the pseudo-element line */
+    padding-left: 25px; /* Creates space for the line and dots */
+}
+
+/* The vertical line that connects all items */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background-color: var(--border-color);
+    border-radius: 2px;
+}
+
+/* Each individual item in the timeline */
+.timeline-item {
+    position: relative; /* Anchor for this item's dot */
+    margin-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0; /* Removes extra space after the last item */
+}
+
+/* The colored dot on the timeline for each item */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent-color);
+    border-radius: 50%; /* Makes it a circle */
+    z-index: 1; /* Ensures dot is on top of the line */
+    border: 2px solid var(--surface-color); /* Creates a cutout effect */
+}
+
+.timeline-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-date {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-description {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+}
+
+/* Styling for bullet-point lists within a timeline item */
+.timeline-description ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 0.5rem;
+}
+
+.timeline-description li {
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================= */
+/* 7. RESPONSIVE DESIGN                          */
+/* ============================================= */
+
+/* Tablet View (screens up to 1024px wide) */
 @media (max-width: 1024px) {
     .main-container {
         flex-direction: column;
@@ -462,32 +574,34 @@ body {
         gap: 0.5rem;
     }
     .nav-logo {
-    display: none;
+        display: none; /* Hide the full text logo */
     }
     #sidebar-nav-img {
+        /* This ID selector is specific, consider a class instead in the future */
         width: 20px;
         height: 20px;
-
     }    
     .nav-link {
         padding: 0.5rem 1rem;
         margin-bottom: 0;
     }
-    .nav-link span { display: none; } 
+    .nav-link span { 
+        display: none; /* Hide text icon for more space */
+    }
     .profile-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
-.sidebar-nav-social {
-        display: none;
+    .sidebar-nav-social {
+        display: none; /* Hide the desktop social links */
     }
-.sidebar-nav-social-res {
+    .sidebar-nav-social-res {
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
-        position:absolute;
+        position: absolute;
         padding: 0.5rem 0;
         justify-content: center;    
         text-decoration: none;
@@ -496,10 +610,9 @@ body {
         right: 0.5rem;
         margin-top: 2rem;
     }     
-
 }
 
-/* Mobile View */
+/* Mobile View (screens up to 767px wide) */
 @media (max-width: 767px) {
     .sidebar-nav {
         flex-wrap: wrap; 
@@ -524,13 +637,10 @@ body {
         text-align: center;
     }
     .card-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Stack cards vertically */
     }
 
-     .sidebar-nav-social {
-        display: none;
-    }
-
+    /* Note: You have two identical rules here. The first one is sufficient. */
     .sidebar-nav-social {
         display: none;
     }
@@ -540,7 +650,7 @@ body {
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
-        position:absolute;
+        position: absolute;
         padding: 0.5rem 0;
         justify-content: center;    
         text-decoration: none;
