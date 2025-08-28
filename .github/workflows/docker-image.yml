@@ -23,12 +23,12 @@ jobs:
       run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u prateeklohani --password-stdin
 
     - name: Build Docker Image
-      run: docker build . --no-cache --file Dockerfile --tag prateeklohani/geteasy-app:${{ steps.meta.outputs.tag }} --tag prateeklohani/geteasy-app:latest
+      run: docker build . --no-cache --file Dockerfile --tag prateeklohani/portfolio:${{ steps.meta.outputs.tag }} --tag prateeklohani/portfolio:latest
 
     - name: Push Docker Image
       run: |
-        docker push prateeklohani/geteasy-app:${{ steps.meta.outputs.tag }}
-        docker push prateeklohani/geteasy-app:latest
+        docker push prateeklohani/portfolio:${{ steps.meta.outputs.tag }}
+        docker push prateeklohani/portfolio:latest
 
   deploy:
     runs-on: ubuntu-latest
