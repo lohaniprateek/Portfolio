@@ -64,6 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
       <section class="section">
           <h3 class="section-title">Experience</h3>
           <div class="timeline">
+               <div class="timeline-item">
+                  <h4 class="timeline-title">Devops Engineer (Intern) - Qappa Labs</h4>
+                  <p class="timeline-date">Present</p>
+                  <ul class="timeline-description">
+                    <li>Designed and deployed scalable, secure cloud infrastructure on AWS (leveraging EC2 and S3) using Infrastructure as Code (IaC) with Terraform, reducing manual provisioning time by ≈40%.</li>
+                    <li>Developed and optimized high-performance microservices using Go (Golang), improving service latency by ≈25% and ensuring 99.99% uptime.</li>
+                    <li>Implemented CI/CD pipelines for Go-based applications, automating testing and deployment to AWS compute instances, cutting release cycle time by over 50%.</li>
+                    <li>Managed and secured vast datasets by architecting and maintaining AWS S3 storage solutions, applying best practices for data lifecycle management and access control (IAM).</li>
+                  </ul>
+              </div>
+
               <div class="timeline-item">
                   <h4 class="timeline-title">Freelancer Web Dev/Site Reliability Engineer - Vishnu Seva Trust</h4>
                   <p class="timeline-date">Mar 2023 - Mar 2024</p>
@@ -105,6 +116,11 @@ document.addEventListener("DOMContentLoaded", () => {
       <section class="section">
           <h3 class="section-title">Certifications & Training</h3>
           <div class="timeline">
+              <div class="timeline-item">
+                  <h4 class="timeline-title">Oracle Cloud Infrastructure Certified</h4>
+                  <p class="timeline-date">Completed 2025</p>
+                  <p class="timeline-description">Demonstrated understanding of Oracle Cloud concepts, core OCI services, security, pricing, and architecture. Hands-on knowledge of compute, storage, networking, IAM, and cloud governance fundamentals.</p>
+              </div>
               <div class="timeline-item">
                   <h4 class="timeline-title">DevOps Beginners to Advanced with Projects (Udemy)</h4>
                   <p class="timeline-date">Completed 2025</p>
