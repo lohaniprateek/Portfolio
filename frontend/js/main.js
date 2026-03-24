@@ -9,14 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
       <h2 class="page-title">About Me</h2>
       <section class="section">
           <p class="timeline-description"> <!-- Using a more generic class for styling -->
-            A passionate and skilled DevOps and Web Engineer with a solid foundation in Linux systems, infrastructure automation, and cloud-native development. I have completed Red Hat’s RH104, RH124, and RH134 training, which equipped me with strong hands-on experience in enterprise Linux environments, scripting, and system administration.
-            <br><br>
-            Experienced in working with tools like Git, Docker, Jenkins, and Ansible for automating application delivery and managing scalable infrastructure. Well-versed in setting up CI/CD pipelines, version control workflows, and automating development lifecycles. Have built and deployed full-stack web applications using JavaScript, React, Node.js, and PostgreSQL, integrating frontend with backend services and APIs.
-            <br><br>
-            Comfortable provisioning infrastructure with tools like Terraform and managing containers using Docker and Kubernetes. I'm also gaining practical experience in monitoring, alerting, and log management using tools like Grafana, Prometheus, and ELK stack. Strong advocate for Infrastructure as Code (IaC), GitOps practices, and clean DevOps workflows that improve collaboration and reduce deployment risks.
-            <br><br>
-            With a Bachelor's degree in Computer Science and continuous hands-on learning, I’m actively seeking opportunities to apply and grow my skills in DevOps, SRE, and modern cloud environments.
-          </p>
+                    I’m a DevOps and Cloud enthusiast who genuinely loves working with Linux systems and constantly evolving my skills around DevOps, cloud, and infrastructure automation.<br><br>
+
+                    I enjoy learning networking concepts, exploring Linux internals, and experimenting with modern DevOps tools — usually on Arch Linux (btw 😉).<br><br>
+                    
+                    My daily practice often includes writing shell scripts to automate setups, streamline workflows, and make systems cleaner and more efficient.<br><br>
+                    
+                    I’m currently building a custom minimal development setup  <a href="https://github.com/lohaniprateek/Tpac" >(TPAC)</a> with dwm and other suckless tools, focused on performance, simplicity, and full control over my environment.<br><br>
+                    
+                    I also write blogs where I share tech tips, experiments, and lessons from my hands-on experience.<br><br>
+                    
+                    Always learning. Always building. 
+      </p>
       </section>
       <section class="section">
           <h3 class="section-title">What I'm Doing</h3>
@@ -24,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="card"> <!-- Removed 'card-bgi' as it's not defined -->
                   <div class="card-content">
                       <h4 class="card-title">DevOps</h4>
-                      <p class="card-description">Automating and streamlining operations and processes, building and maintaining tools for deployment, monitoring, and operations.</p>
+                         <p class="card-description">Automating and streamlining operational processes while building and maintaining tools for deployment, monitoring, and system reliability..</p>
                   </div>
               </div>
               <div class="card">
@@ -60,57 +64,54 @@ document.addEventListener("DOMContentLoaded", () => {
     return `
       <h2 class="page-title">Resume</h2>
 
-      <!-- Experience Section -->
-      <section class="section">
-          <h3 class="section-title">Experience</h3>
-          <div class="timeline">
-               <div class="timeline-item">
-                  <h4 class="timeline-title">Devops Engineer (Intern) - Qappa Labs</h4>
-                  <p class="timeline-date">Present</p>
-                  <ul class="timeline-description">
-                    <li>Designed and deployed scalable, secure cloud infrastructure on AWS (leveraging EC2 and S3) using Infrastructure as Code (IaC) with Terraform, reducing manual provisioning time by ≈40%.</li>
-                    <li>Developed and optimized high-performance microservices using Go (Golang), improving service latency by ≈25% and ensuring 99.99% uptime.</li>
-                    <li>Implemented CI/CD pipelines for Go-based applications, automating testing and deployment to AWS compute instances, cutting release cycle time by over 50%.</li>
-                    <li>Managed and secured vast datasets by architecting and maintaining AWS S3 storage solutions, applying best practices for data lifecycle management and access control (IAM).</li>
-                  </ul>
-              </div>
+<section class="section">
+  <h3 class="section-title">Experience</h3>
+  <div class="timeline">
 
-              <div class="timeline-item">
-                  <h4 class="timeline-title">Freelancer Web Dev/Site Reliability Engineer - Vishnu Seva Trust</h4>
-                  <p class="timeline-date">Mar 2023 - Mar 2024</p>
-                  <ul class="timeline-description">
-                      <li>Designed and developed a secure, user-friendly donation platform, integrating a payment gateway to streamline online contributions.</li>
-                      <li>Implemented 99.9% uptime architecture with server monitoring, automated backups, and failover mechanisms.</li>
-                      <li>Applied SEO and performance optimization techniques, boosting organic traffic by 35% and improving page load speed by 50%.</li>
-                      <li>Automated deployment workflows using CI/CD pipelines to reduce manual release time by 60%.</li>
-                  </ul>
-              </div>
-              <div class="timeline-item">
-                  <h4 class="timeline-title">Freelancer Web Developer - WEwear</h4>
-                  <p class="timeline-date">Jun 2022 - Aug 2022</p>
-                  <ul class="timeline-description">
-                      <li>Developed and launched a fully functional e-commerce website using Shopify.</li>
-                      <li>Implemented custom themes and integrated payment gateways to enhance user experience.</li>
-                      <li>Collaborated with the client to ensure the website met business requirements and provided a seamless shopping experience.</li>
-                  </ul>
-              </div>
-          </div>
-      </section>
+    <div class="timeline-item">
+      <h4 class="timeline-title">DevOps Engineer (Intern) - Qappa Labs</h4>
+      <p class="timeline-date">Present</p>
+      <ul class="timeline-description">
+        <li>Designed and provisioned scalable, secure AWS infrastructure (EC2, S3, IAM) using Terraform, reducing manual provisioning effort by ~40% through Infrastructure as Code (IaC).</li>
+        <li>Contributed to the development of <strong>Terraform Sync</strong>, an internal infrastructure comparison and drift-detection system to analyze Terraform state and configuration changes.</li>
+        <li>Built the data collection layer to extract and normalize Terraform state and resource configurations for structured analysis.</li>
+        <li>Engineered a comparison engine to detect infrastructure drift, resource-level changes, and configuration mismatches across environments.</li>
+        <li>Implemented patch/diff generation logic to produce structured change outputs, enabling safer and more controlled infrastructure updates.</li>
+        <li>Developed and optimized Go-based microservices supporting automation workflows, improving service efficiency and reliability.</li>
+        <li>Built and maintained CI/CD pipelines for automated testing and deployment, reducing release cycles by over 50%.</li>
+      </ul>
+    </div>
 
-      <!-- Education Section -->
-      <section class="section">
-        <div class="section-header">
-            ${graduationCapSVG}
-            <h3 class="section-title">Education</h3>
-        </div>
-        <div class="timeline">
-            <div class="timeline-item">
-                <h4 class="timeline-title">B.Tech in Computer Science</h4>
-                <p class="timeline-date">2021 - 2025 | Uttrakhand Technical University, Dehradun</p>
-                <p class="timeline-description">Focus on core subjects like OS, Networking, and Programming.</p>
-            </div>
-        </div>
-      </section>
+    <div class="timeline-item">
+      <h4 class="timeline-title">Freelancer Web Dev / Site Reliability Engineer - Vishnu Seva Trust</h4>
+      <p class="timeline-date">Mar 2023 - Mar 2024</p>
+      <ul class="timeline-description">
+        <li>Designed and developed a secure donation platform with integrated payment gateway.</li>
+        <li>Engineered 99.9% uptime architecture with monitoring, automated backups, and failover mechanisms.</li>
+        <li>Improved performance and SEO, increasing organic traffic by 35% and reducing page load time by 50%.</li>
+        <li>Automated deployment workflows using CI/CD pipelines, reducing manual release effort by 60%.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- Education Section -->
+<section class="section">
+  <div class="section-header">
+    ${graduationCapSVG}
+    <h3 class="section-title">Education</h3>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4 class="timeline-title">B.Tech in Computer Science</h4>
+      <p class="timeline-date">2021 - 2025 | Uttarakhand Technical University, Dehradun</p>
+      <p class="timeline-description">
+        Strong foundation in Operating Systems, Computer Networks, DBMS, and Programming. Focused on systems engineering and infrastructure automation.
+      </p>
+    </div>
+  </div>
+</section>
 
       <!-- Non-formal Education Section -->
       <section class="section">
