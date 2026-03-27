@@ -1,6 +1,60 @@
 document.addEventListener("DOMContentLoaded", () => {
   const contentContainer = document.getElementById("page-content");
   const navLinks = document.querySelectorAll(".nav-link");
+  const escapeHTML = (value) =>
+    String(value).replace(/[&<>"']/g, (char) => {
+      const entities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      };
+      return entities[char];
+    });
+
+  const renderCard = ({ imageUrl, title, bodyHTML, href, meta, badge, cta }) => {
+    const cardContent = `
+      <article class="card">
+        <img src="${escapeHTML(imageUrl)}" alt="${escapeHTML(title)}" class="card-image">
+        <div class="card-content">
+          ${badge ? `<span class="card-badge">${escapeHTML(badge)}</span>` : ""}
+          ${meta ? `<p class="card-date">${escapeHTML(meta)}</p>` : ""}
+          <h4 class="card-title">${escapeHTML(title)}</h4>
+          ${bodyHTML}
+          ${cta ? `<span class="card-cta">${escapeHTML(cta)}</span>` : ""}
+        </div>
+      </article>
+    `;
+
+    if (!href) {
+      return cardContent;
+    }
+
+    return `
+      <a href="${escapeHTML(href)}" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Open ${escapeHTML(title)}">
+        ${cardContent}
+      </a>
+    `;
+  };
+
+  const renderAsyncSection = async (loader, emptyMessage) => {
+    try {
+      const response = await loader();
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const items = await response.json();
+      if (!items.length) {
+        return `<p class="status-message">${escapeHTML(emptyMessage)}</p>`;
+      }
+
+      return items;
+    } catch (error) {
+      return `<p class="status-message error-message">Unable to load this section right now. Please try again later.</p>`;
+    }
+  };
 
   // --- TEMPLATE FUNCTIONS ---
 
@@ -8,27 +62,25 @@ document.addEventListener("DOMContentLoaded", () => {
     return `
       <h2 class="page-title">About Me</h2>
       <section class="section">
-          <p class="timeline-description"> <!-- Using a more generic class for styling -->
-                    I’m a DevOps and Cloud enthusiast who genuinely loves working with Linux systems and constantly evolving my skills around DevOps, cloud, and infrastructure automation.<br><br>
+          <p class="timeline-description">
+                    I’m a DevOps and cloud-focused engineer who enjoys working close to Linux systems, infrastructure automation, and reliability problems.<br><br>
 
-                    I enjoy learning networking concepts, exploring Linux internals, and experimenting with modern DevOps tools — usually on Arch Linux (btw 😉).<br><br>
+                    A lot of my hands-on time goes into shell scripting, experimenting with modern tooling, and building cleaner local and cloud environments that are easier to operate.<br><br>
                     
-                    My daily practice often includes writing shell scripts to automate setups, streamline workflows, and make systems cleaner and more efficient.<br><br>
+                    I’m also building a custom minimal development setup <a href="https://github.com/lohaniprateek/Tpac" target="_blank" rel="noopener noreferrer">(TPAC)</a> with dwm and other suckless tools, focused on performance, simplicity, and control.<br><br>
                     
-                    I’m currently building a custom minimal development setup  <a href="https://github.com/lohaniprateek/Tpac" >(TPAC)</a> with dwm and other suckless tools, focused on performance, simplicity, and full control over my environment.<br><br>
+                    I write technical blogs to document what I learn and use personal projects as a way to sharpen practical engineering judgment.<br><br>
                     
-                    I also write blogs where I share tech tips, experiments, and lessons from my hands-on experience.<br><br>
-                    
-                    Always learning. Always building. 
+                    Always learning. Always building.
       </p>
       </section>
       <section class="section">
           <h3 class="section-title">What I'm Doing</h3>
           <div class="card-grid">
-              <div class="card"> <!-- Removed 'card-bgi' as it's not defined -->
+              <div class="card">
                   <div class="card-content">
                       <h4 class="card-title">DevOps</h4>
-                         <p class="card-description">Automating and streamlining operational processes while building and maintaining tools for deployment, monitoring, and system reliability..</p>
+                         <p class="card-description">Automating deployments, improving delivery workflows, and building reliable systems with strong operational visibility.</p>
                   </div>
               </div>
               <div class="card">
@@ -64,13 +116,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return `
       <h2 class="page-title">Resume</h2>
 
-<section class="section">
-  <h3 class="section-title">Experience</h3>
-  <div class="timeline">
-
+	<section class="section">
+	  <h3 class="section-title">Experience</h3>
+	  <div class="timeline">
+	  
+	    <div class="timeline-item">
+	    <h4 class="timeline-title">Open to Work - DevOps / Cloud / SRE Roles</h4>
+	    <p class="timeline-date">Present</p>  
+	    <ul class="timeline-description">
+	      <li>Actively pursuing DevOps and cloud engineering opportunities aligned with Linux, infrastructure automation, and reliability engineering.</li>
+	      <li>Strengths include Linux troubleshooting, Terraform, AWS, CI/CD pipelines, Docker, GitLab, and core networking fundamentals.</li>
+	      <li>Continuing hands-on work through personal projects, lab environments, and automation-focused experimentation.</li>
+	      <li>Regularly document practical learnings through technical blog posts on Medium under <strong>lohaniprateek</strong>.</li>
+	    </ul>
+	    </div>
+    
     <div class="timeline-item">
       <h4 class="timeline-title">DevOps Engineer (Intern) - Qappa Labs</h4>
-      <p class="timeline-date">Present</p>
+      <p class="timeline-date">Sep 2025 - Mar 2026</p>
       <ul class="timeline-description">
         <li>Designed and provisioned scalable, secure AWS infrastructure (EC2, S3, IAM) using Terraform, reducing manual provisioning effort by ~40% through Infrastructure as Code (IaC).</li>
         <li>Contributed to the development of <strong>Terraform Sync</strong>, an internal infrastructure comparison and drift-detection system to analyze Terraform state and configuration changes.</li>
@@ -136,10 +199,11 @@ document.addEventListener("DOMContentLoaded", () => {
                       <li><strong>RH134:</strong> Advanced system administration, services, and firewalls.</li>
                   </ul>
               </div>
-              <div class="timeline-item"></div>
+              <div class="timeline-item">
                   <h4 class="timeline-title">Full Stack Web Development Bootcamp (Udemy)</h4>
                   <p class="timeline-date">Completed 2024</p>
                   <p class="timeline-description">Covered HTML, CSS, JavaScript, Node.js, Express.js, React, PostgreSQL, and Git.</p>
+              </div>
           </div>
       </section>
       
@@ -208,48 +272,63 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   
   const renderPortfolioPage = async () => {
-    // This function remains the same
-    const response = await fetch("/api/portfolio");
-    const items = await response.json();
+    const items = await renderAsyncSection(() => fetch("/api/portfolio"), "Projects will appear here soon.");
+    if (typeof items === "string") {
+      return `
+            <h2 class="page-title">Portfolio</h2>
+            ${items}
+        `;
+    }
+
     const portfolioItemsHTML = items
-      .map(
-        (item) => `
-            <div class="card">
-                <img src="${item.imageUrl}" alt="${item.title}" class="card-image">
-                <div class="card-content">
-                    <h4 class="card-title">${item.title}</h4>
-                    <p class="card-description">${item.description}</p>
-                </div>
-            </div>
-        `
+      .map((item) =>
+        renderCard({
+          imageUrl: item.imageUrl,
+          title: item.title,
+          bodyHTML: `<p class="card-description">${escapeHTML(item.description)}</p>`,
+          href: item.link,
+          badge: item.category,
+          cta: item.link ? "View project" : "Project details coming soon",
+        })
       )
       .join("");
     return `
             <h2 class="page-title">Portfolio</h2>
+            <p class="section-link section-link-muted">Selected work focused on automation, infrastructure, and reliability engineering.</p>
             <div class="card-grid">${portfolioItemsHTML}</div>
         `;
   };
 
   const renderBlogPage = async () => {
-    // This function remains the same
-    const response = await fetch("/api/blog");
-    const posts = await response.json();
+    const posts = await renderAsyncSection(() => fetch("/api/blog"), "Blog posts will appear here soon.");
+    if (typeof posts === "string") {
+      return `
+            <h2 class="page-title">Blog</h2>
+            <p class="section-link">
+                <a href="https://medium.com/@lohaniprateek" target="_blank" rel="noopener noreferrer">Read more on Medium</a>
+            </p>
+            ${posts}
+        `;
+    }
+
     const blogPostsHTML = posts
-      .map(
-        (post) => `
-             <div class="card">
-                <img src="${post.imageUrl}" alt="${post.title}" class="card-image">
-                <div class="card-content">
-                    <p class="card-date">${post.date}</p>
-                    <h4 class="card-title">${post.title}</h4>
-                    <p class="card-description">${post.snippet}</p>
-                </div>
-            </div>
-        `
+      .map((post) =>
+        renderCard({
+          imageUrl: post.imageUrl,
+          title: post.title,
+          bodyHTML: `<p class="card-description">${escapeHTML(post.snippet)}</p>`,
+          href: post.link,
+          meta: post.date,
+          badge: post.badge,
+          cta: post.link ? "Read article" : "",
+        })
       )
       .join("");
     return `
             <h2 class="page-title">Blog</h2>
+            <p class="section-link">
+                <a href="https://medium.com/@lohaniprateek" target="_blank" rel="noopener noreferrer">Read more on Medium</a>
+            </p>
             <div class="card-grid">${blogPostsHTML}</div>
         `;
   };
@@ -259,10 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <h2 class="page-title">Contact</h2>
             <p><strong>Open for opportunities:</strong> Yes</p>
             <br>
-            <form class="contact-form" action="https://formsubmit.co/kprateek9315@gmail.com" method="POST">
-                <!-- This hidden input redirects the user to your thank you page after submission -->
-                <input type="hidden" name="_next" value="https://prateek-kumar-protfolio.onrender.com/thankyou.html">  
-                
+            <form class="contact-form" id="contact-form">
                 <div class="form-group">
                     <label for="fullName">Full name</label>
                     <input type="text" id="fullName" name="fullName" class="form-input" required>
@@ -277,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
-            <!-- The status paragraph is no longer needed as we are not using JS for submission status -->
+            <p id="contact-status" class="status-message" aria-live="polite"></p>
         `;
   };
 
@@ -295,9 +371,57 @@ document.addEventListener("DOMContentLoaded", () => {
     if (pageRenderers[page]) {
       const content = await pageRenderers[page]();
       contentContainer.innerHTML = content;
+      bindDynamicContent(page);
     } else {
       contentContainer.innerHTML = "<p>Page not found.</p>";
     }
+  };
+
+  const bindDynamicContent = (page) => {
+    if (page !== "contact") {
+      return;
+    }
+
+    const contactForm = document.getElementById("contact-form");
+    const statusElement = document.getElementById("contact-status");
+    if (!contactForm || !statusElement) {
+      return;
+    }
+
+    contactForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      statusElement.textContent = "Sending message...";
+      statusElement.className = "status-message";
+
+      const formData = new FormData(contactForm);
+      const payload = {
+        fullName: formData.get("fullName"),
+        email: formData.get("email"),
+        message: formData.get("message"),
+      };
+
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.message || "Unable to send message");
+        }
+
+        statusElement.textContent = result.message || "Message sent successfully.";
+        statusElement.className = "status-message success-message";
+        contactForm.reset();
+      } catch (error) {
+        statusElement.textContent = error.message || "Unable to send message right now.";
+        statusElement.className = "status-message error-message";
+      }
+    });
   };
 
   const updateActiveLink = (page) => {
@@ -313,10 +437,20 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       const page = e.target.closest(".nav-link").dataset.page;
+      if (window.location.hash.substring(1) === page) {
+        updateActiveLink(page);
+        loadContent(page);
+        return;
+      }
+
       window.location.hash = page;
-      updateActiveLink(page);
-      loadContent(page);
     });
+  });
+
+  window.addEventListener("hashchange", () => {
+    const page = window.location.hash.substring(1) || "about";
+    updateActiveLink(page);
+    loadContent(page);
   });
 
   const initialPage = window.location.hash.substring(1) || "about";
