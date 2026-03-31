@@ -1,9 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"net/smtp"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 // PortfolioItem defines the structure for a portfolio project.
@@ -21,6 +27,8 @@ type BlogPost struct {
 	Date     string `json:"date"`
 	Snippet  string `json:"snippet"`
 	ImageURL string `json:"imageUrl"`
+	Link     string `json:"link,omitempty"`
+	Badge    string `json:"badge"`
 }
 
 // ContactFormSubmission defines the structure for the contact form data.
@@ -30,43 +38,153 @@ type ContactFormSubmission struct {
 	Message  string `json:"message"`
 }
 
+type smtpConfig struct {
+	host     string
+	port     string
+	username string
+	password string
+	to       string
+}
+
+func loadSMTPConfig() smtpConfig {
+	return smtpConfig{
+		host:     os.Getenv("SMTP_HOST"),
+		port:     os.Getenv("SMTP_PORT"),
+		username: os.Getenv("SMTP_USER"),
+		password: os.Getenv("SMTP_PASS"),
+		to:       firstNonEmpty(os.Getenv("CONTACT_TO"), "kprateek9315@gmail.com"),
+	}
+}
+
+func (c smtpConfig) valid() bool {
+	return c.host != "" && c.port != "" && c.username != "" && c.password != "" && c.to != ""
+}
+
+func (c smtpConfig) addr() string {
+	return c.host + ":" + c.port
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, value := range values {
+		if value != "" {
+			return value
+		}
+	}
+
+	return ""
+}
+
+func sendContactEmail(cfg smtpConfig, submission ContactFormSubmission) error {
+	auth := smtp.PlainAuth("", cfg.username, cfg.password, cfg.host)
+	subject := fmt.Sprintf("Portfolio contact from %s", submission.FullName)
+	body := strings.Join([]string{
+		fmt.Sprintf("Name: %s", submission.FullName),
+		fmt.Sprintf("Email: %s", submission.Email),
+		"",
+		"Message:",
+		submission.Message,
+	}, "\n")
+
+	message := strings.Join([]string{
+		fmt.Sprintf("To: %s", cfg.to),
+		fmt.Sprintf("From: %s", cfg.username),
+		fmt.Sprintf("Reply-To: %s", submission.Email),
+		fmt.Sprintf("Subject: %s", subject),
+		"MIME-Version: 1.0",
+		"Content-Type: text/plain; charset=UTF-8",
+		"",
+		body,
+	}, "\r\n")
+
+	return smtp.SendMail(cfg.addr(), auth, cfg.username, []string{cfg.to}, []byte(message))
+}
+
+func loadDotEnv(paths ...string) {
+	for _, path := range paths {
+		if err := applyDotEnv(path); err != nil && !os.IsNotExist(err) {
+			log.Printf("Error loading %s: %v", path, err)
+		}
+	}
+}
+
+func applyDotEnv(path string) error {
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		key, value, found := strings.Cut(line, "=")
+		if !found {
+			continue
+		}
+
+		key = strings.TrimSpace(key)
+		value = strings.TrimSpace(value)
+		value = strings.Trim(value, `"'`)
+		if key == "" || os.Getenv(key) != "" {
+			continue
+		}
+
+		if err := os.Setenv(key, value); err != nil {
+			return err
+		}
+	}
+
+	return scanner.Err()
+}
+
 func main() {
+	loadDotEnv(".env", filepath.Join(".", ".env.local"))
+	smtpCfg := loadSMTPConfig()
+
 	// --- API Endpoints ---
 
 	// API handler for portfolio items
 	http.HandleFunc("/api/portfolio", func(w http.ResponseWriter, r *http.Request) {
 		portfolioItems := []PortfolioItem{
 			{
-				Title:       "Get AidEasy",
-				Description: "Get-EasyAid is a responsive web app that automates Coursera Financial Aid applications using Google Gemini API. Users select a course, submit a form, and receive AI-generated answers to required questions. I forked, containerized it with Docker, and set up CI/CD using GitHub Actions for seamless deployment and updates.",
-				ImageURL:    "../images/Project1.png",
+				Title:       "TPAC",
+				Description: "A custom minimal Arch Linux development setup built around dwm and other suckless tools, focused on performance, simplicity, and direct control over the local engineering environment.",
+				ImageURL:    "/assets/projects/tpac-logo.png",
+				Category:    "Linux",
+				Link:        "https://github.com/lohaniprateek/Tpac",
+			},
+			{
+				Title:       "CI/CD Pipeline with Jenkins & Docker-in-Docker",
+				Description: "Built an end-to-end Jenkins pipeline for a Node.js application using Docker-in-Docker and Docker Compose to automate builds, tests, and deployments with reproducible local infrastructure.",
+				ImageURL:    "/assets/projects/devops.jpg",
 				Category:    "DevOps",
-				Link:        "https://github.com/lohaniprateek/Get-AidEasy"},
-
+				Link:        "",
+			},
 			{
-				Title:       "Multi Cloud Hybrid Infrastructure",
-				Description: "Solution to xAI's 'Multi-Cloud Hybrid Infrastructure' Optimization challenge. Redesigned a microservices-based hybrid cloud setup (AWS & GCP) to fix inefficiencies and security flaws using infrastructure modernization, prompt engineering, and security best practices.",
-				ImageURL:    "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
-				Category:    "SRE",
-				Link:        "https://github.com/lohaniprateek/Get-AidEasy"},
+				Title:       "GitOps Deployment with Argo CD",
+				Description: "Implemented a GitOps deployment model on Kubernetes with Argo CD as the single source of truth, enabling version-controlled releases and simpler rollback during incidents.",
+				ImageURL:    "/assets/multi_cloud.png",
+				Category:    "Kubernetes",
+				Link:        "",
+			},
 			{
-				Title:       "React Demo Github Actions",
-				Description: "Implemented GitHub Actions for automated CI/CD pipelines and integrated SonarQube for code quality analysis in a forked React application. Successfully deployed the React app and its dist folder to production environments.",
-				ImageURL:    "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
-				Category:    "Development", Link: "https://github.com/lohaniprateek/Get-AidEasy"},
+				Title:       "V-Profile: Multi-Tier Lift & Shift to AWS",
+				Description: "Migrated a multi-tier application to AWS using RDS, Elastic Beanstalk, ElastiCache, and ActiveMQ, with Terraform-based provisioning that cut setup time from hours to minutes.",
+				ImageURL:    "/assets/multi_cloud.png",
+				Category:    "AWS",
+				Link:        "",
+			},
 			{
-				Title: "Sms Orchestration Automation",
-				Description: "Built a multi-VM setup using Vagrant and Docker, deployed Nginx with shell scripts, and integrated Prometheus for monitoring. Showcased DevOps skills in orchestration, containerization, and observability.",
-				ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
-				Category: "SRE",
-				Link: ""},
-			{
-				Title:       "Static Site Deployment",
-				Description: "This project focused on deploying a static HTML website using Docker. The goal was to create a containerized environment that runs a lightweight web server to serve static content. This approach ensures easy setup, consistent behavior across systems, and simplified deployment, making the website portable, efficient, and ready for production use",
-				ImageURL:    "https://placehold.co/600x400/1a1a1a/ffffff?text=Project",
-				Category:    "Cloud",
-				Link:        "https://github.com/lohaniprateek/Get-AidEasy"},
-			// {Title: "Cloud Migration Strategy", Description: "A comprehensive plan for migrating on-premise infrastructure to AWS.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Project+1", Category: "Cloud", Link: "},
+				Title:       "Proactive SSL/TLS Certificate Monitoring CLI",
+				Description: "Built a Go CLI to monitor certificate expiry and trust-chain health across multiple domains with configurable thresholds, helping prevent SSL-related outages before they happen.",
+				ImageURL:    "/assets/projects/pavi-project.png",
+				Category:    "Go",
+				Link:        "https://github.com/lohaniprateek/pavi",
+			},
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(portfolioItems)
@@ -75,12 +193,38 @@ func main() {
 	// API handler for blog posts
 	http.HandleFunc("/api/blog", func(w http.ResponseWriter, r *http.Request) {
 		blogPosts := []BlogPost{
-			{Title: "Understanding Site Reliability Engineering", Date: "2023-10-26", Snippet: "A deep dive into the principles and practices of SRE.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Blog+1"},
-			{Title: "Getting Started with Go for Backend", Date: "2023-09-15", Snippet: "Why Go is a great choice for modern backend services.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Blog+2"},
-			{Title: "Top 5 DevOps Trends in 2024", Date: "2023-08-22", Snippet: "Exploring the future of DevOps and automation.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Blog+3"},
-			{Title: "A Guide to Effective Cloud Cost Management", Date: "2023-07-30", Snippet: "Strategies to optimize your spending on cloud services.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Blog+4"},
-			{Title: "Building Resilient Systems", Date: "2023-06-18", Snippet: "Techniques for designing systems that withstand failure.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Blog+5"},
-			{Title: "Introduction to Containerization with Docker", Date: "2023-05-05", Snippet: "The fundamentals of Docker and container technology.", ImageURL: "https://placehold.co/600x400/1a1a1a/ffffff?text=Blog+6"},
+			{
+				Title:    "The Docker Concept: Why Your Application Needs It",
+				Date:     "2026-03-23",
+				Snippet:  "A practical look at why containerization matters and how Docker improves consistency across environments.",
+				ImageURL: "/assets/blogs/Comomon.png",
+				Link:     "https://medium.com/@lohaniprateek/the-docker-concept-why-your-application-needs-it-347f7856b947",
+				Badge:    "DevOps",
+			},
+			{
+				Title:    "The Why: “Learn Linux Before DevOps”",
+				Date:     "2026-02-15",
+				Snippet:  "Why Linux fundamentals matter before going deeper into DevOps tooling, automation, and infrastructure work.",
+				ImageURL: "/assets/blogs/linux_befoer-devops.png",
+				Link:     "https://medium.com/@lohaniprateek/the-docker-concept-why-your-application-needs-it-347f7856b947",
+				Badge:    "Linux/DevOps",
+			},
+			{
+				Title:    "Arch Linux RAM & Memory Optimization with Zram",
+				Date:     "2025-12-31",
+				Snippet:  "Notes on reducing memory pressure and improving responsiveness on Linux systems using zram.",
+				ImageURL: "/assets/blogs/ram-opt.png",
+				Link:     "https://medium.com/@lohaniprateek/the-docker-concept-why-your-application-needs-it-347f7856b947",
+				Badge:    "Linux",
+			},
+			{
+				Title:    "Installing AppImage in Linux",
+				Date:     "2025-12-03",
+				Snippet:  "A quick guide to running and managing AppImage packages cleanly on Linux.",
+				ImageURL: "/assets/blogs/Comomon.png",
+				Link:     "https://medium.com/@lohaniprateek/the-docker-concept-why-your-application-needs-it-347f7856b947",
+				Badge:    "Linux",
+			},
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(blogPosts)
@@ -88,24 +232,58 @@ func main() {
 
 	// API handler for contact form submission
 	http.HandleFunc("/api/contact", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
 		if r.Method != http.MethodPost {
-			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			if err := json.NewEncoder(w).Encode(map[string]string{"message": "Invalid request method"}); err != nil {
+				log.Printf("Error writing response: %v", err)
+			}
 			return
 		}
 
 		var submission ContactFormSubmission
 		err := json.NewDecoder(r.Body).Decode(&submission)
 		if err != nil {
-			http.Error(w, "Error decoding request body", http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
+			if err := json.NewEncoder(w).Encode(map[string]string{"message": "Error decoding request body"}); err != nil {
+				log.Printf("Error writing response: %v", err)
+			}
 			return
 		}
 
-		// In a real application, you would save this to a database, send an email, etc.
-		// For this example, we just log it to the console.
+		if submission.FullName == "" || submission.Email == "" || submission.Message == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			if err := json.NewEncoder(w).Encode(map[string]string{"message": "All fields are required"}); err != nil {
+				log.Printf("Error writing response: %v", err)
+			}
+			return
+		}
+
 		log.Printf("Received contact form submission: Name: %s, Email: %s, Message: %s", submission.FullName, submission.Email, submission.Message)
 
+		if !smtpCfg.valid() {
+			log.Printf("SMTP is not configured; submission from %s was logged but not emailed", submission.Email)
+			w.WriteHeader(http.StatusServiceUnavailable)
+			if err := json.NewEncoder(w).Encode(map[string]string{"message": "Contact email is not configured yet on the server"}); err != nil {
+				log.Printf("Error writing response: %v", err)
+			}
+			return
+		}
+
+		if err := sendContactEmail(smtpCfg, submission); err != nil {
+			log.Printf("Error sending contact email: %v", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			if err := json.NewEncoder(w).Encode(map[string]string{"message": "Unable to send message right now. Please try again later."}); err != nil {
+				log.Printf("Error writing response: %v", err)
+			}
+			return
+		}
+
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"message": "Form submitted successfully!"}`))
+		if err := json.NewEncoder(w).Encode(map[string]string{"message": "Message received. I will get back to you soon."}); err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
 	})
 
 	// --- Static File Server ---
