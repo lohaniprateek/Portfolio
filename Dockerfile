@@ -14,7 +14,7 @@ FROM gcr.io/distroless/base-debian11
 
 WORKDIR /app
 
-COPY --from=builder /app/app . 
+COPY --from=builder /app/app .
 
 EXPOSE 8080
 
