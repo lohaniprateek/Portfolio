@@ -1,17 +1,23 @@
-
-FROM golang:1.19
+FROM golang:1.19 AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY go.mod go.sum ./
 RUN go mod download
-COPY *.go ./
 
-# Build
-RUN go build -o /docker-gs-ping
+COPY . .
 
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -o app
+
+FROM grc/io/distroless/base-debian11
+
+WORKDIR /app
+
+COPY --from=builder /app/app . 
 
 EXPOSE 8080
 
-# Run
-CMD ["/docker-gs-ping"]
+USER nonroot:nonroot
+
+CMD ["./app"]
