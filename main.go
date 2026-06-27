@@ -151,6 +151,13 @@ func main() {
 	http.HandleFunc("/api/portfolio", func(w http.ResponseWriter, r *http.Request) {
 		portfolioItems := []PortfolioItem{
 			{
+				Title:       "SiteScope",
+				Description: "An open-source Go CLI for cloud and domain diagnostics that combines DNS, TLS, CDN, WAF, HTTP, ASN, and infrastructure analysis into a single binary for DevOps engineers and SREs.",
+				ImageURL:    "/assets/projects/sitescope.png",
+				Category:    "DevOps",
+				Link:        "https://gitlab.com/lohaniprateek/sitescope",
+			},
+			{
 				Title:       "TPAC",
 				Description: "A custom minimal Arch Linux development setup built around dwm and other suckless tools, focused on performance, simplicity, and direct control over the local engineering environment.",
 				ImageURL:    "/assets/projects/tpac-logo.png",
@@ -177,13 +184,6 @@ func main() {
 				ImageURL:    "/assets/multi_cloud.png",
 				Category:    "AWS",
 				Link:        "",
-			},
-			{
-				Title:       "Proactive SSL/TLS Certificate Monitoring CLI",
-				Description: "Built a Go CLI to monitor certificate expiry and trust-chain health across multiple domains with configurable thresholds, helping prevent SSL-related outages before they happen.",
-				ImageURL:    "/assets/projects/pavi-project.png",
-				Category:    "Go",
-				Link:        "https://github.com/lohaniprateek/pavi",
 			},
 		}
 		w.Header().Set("Content-Type", "application/json")

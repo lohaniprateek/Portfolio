@@ -63,16 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
       <h2 class="page-title">About Me</h2>
       <section class="section">
           <p class="timeline-description">
-                    I’m a DevOps and cloud-focused engineer who enjoys working close to Linux systems, infrastructure automation, and reliability problems.<br><br>
-
-                    A lot of my hands-on time goes into shell scripting, experimenting with modern tooling, and building cleaner local and cloud environments that are easier to operate.<br><br>
-                    
-                    I’m also building a custom minimal development setup <a href="https://github.com/lohaniprateek/Tpac" target="_blank" rel="noopener noreferrer">(TPAC)</a> with dwm and other suckless tools, focused on performance, simplicity, and control.<br><br>
-                    
-                    I write technical blogs to document what I learn and use personal projects as a way to sharpen practical engineering judgment.<br><br>
-                    
-                    Always learning. Always building.
-      </p>
+              I’m a DevOps Engineer who enjoys building reliable infrastructure, automating operational workflows, and solving problems close to Linux systems, cloud platforms, and production environments.<br><br>
+              
+              My work spans Google Cloud, AWS, Kubernetes, Docker, Terraform, CI/CD, and observability, with a strong focus on building infrastructure that is simple to operate, cost-efficient, and reliable in production.<br><br>
+              
+              Beyond my day-to-day work, I build open-source tools such as <strong>SiteScope</strong>, a cloud and domain diagnostics CLI for DevOps engineers and SREs, and <strong>TPAC</strong>, my custom Arch Linux development environment built around dwm and the suckless ecosystem, focused on performance, simplicity, and complete control.<br><br>
+              
+              I regularly write technical blogs covering Linux, DevOps, cloud engineering, and the tools I build, documenting practical lessons from real-world projects and personal experimentation.<br><br>
+              
+              Always learning. Always building. Always automating.
+          </p>
       </section>
       <section class="section">
           <h3 class="section-title">What I'm Doing</h3>
@@ -120,17 +120,23 @@ document.addEventListener("DOMContentLoaded", () => {
 	  <h3 class="section-title">Experience</h3>
 	  <div class="timeline">
 	  
-	    <div class="timeline-item">
-	    <h4 class="timeline-title">Open to Work - DevOps / Cloud / SRE Roles</h4>
-	    <p class="timeline-date">Present</p>  
-	    <ul class="timeline-description">
-	      <li>Actively pursuing DevOps and cloud engineering opportunities aligned with Linux, infrastructure automation, and reliability engineering.</li>
-	      <li>Strengths include Linux troubleshooting, Terraform, AWS, CI/CD pipelines, Docker, GitLab, and core networking fundamentals.</li>
-	      <li>Continuing hands-on work through personal projects, lab environments, and automation-focused experimentation.</li>
-	      <li>Regularly document practical learnings through technical blog posts on Medium under <strong>lohaniprateek</strong>.</li>
-	    </ul>
-	    </div>
-    
+    <div class="timeline-item">
+    <h4 class="timeline-title">DevOps Engineer - Blink Tech</h4>
+    <p class="timeline-date"> Present | Remote</p>
+
+    <ul class="timeline-description">
+        <li>Sole DevOps engineer managing end-to-end Google Cloud infrastructure for two production applications, provisioning VMs, networking, DNS, PostgreSQL, and Cloudflare integration.</li>
+
+        <li>Designed lightweight production deployments using Docker Compose, Nginx reverse proxy, and GitHub Actions CI/CD pipelines publishing images to Google Artifact Registry.</li>
+
+        <li>Migrated production workloads to a self-managed K3s Kubernetes cluster with Traefik ingress, persistent storage, Kubernetes Secrets, and rolling deployments.</li>
+
+        <li>Integrated Redis caching using Google Memorystore and performed load testing with k6 to validate production scalability.</li>
+
+        <li>Built internal shell-based monitoring tooling to detect service failures, storage issues, and operational anomalies before impacting production.</li>
+    </ul>
+</div>
+
     <div class="timeline-item">
       <h4 class="timeline-title">DevOps Engineer (Intern) - Qappa Labs</h4>
       <p class="timeline-date">Sep 2025 - Mar 2026</p>
